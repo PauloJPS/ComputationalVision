@@ -9,7 +9,9 @@ class filters():
         self.n = image.size[0]
         self.image = image
         image = image.convert('L')
+        image = image.resize((256, 256), Image.ANTIALIAS)
         self.imageMat = np.asarray(image.getdata()).reshape((self.n, self.n))
+
 
     def fftImage(self):
         return np.fft.fft2(self.imageMat)
@@ -45,8 +47,20 @@ class filters():
         newMat = np.zeros((self.n, self.n))
         for i in range(self.n):
             for j in range(self.n):
-                if mat[i][j] > 1: newMat[i][j] = 256
+                if mat[i][j] > 1: newMat[i][j] = 1
                 else : newMat[i][j] = 0
+        return newMat
+
+    def zeroCrossing(self):
+        mat = self.thresholding()
+        newMat = np.zeros((self.n, self.n))
+        for i in range(1, self.n-1):
+            for j in range(1, self.n-1):
+                if mat[i][j] == 1:
+                    if (mat[i+1][j] == 0 or mat[i-1][j] == 0
+                            or mat[i][j-1] == 0 or mat[i][j+1] == 0):
+                        newMat[i][j] = 1
+                else: newMat[i][j] = 0 
         return newMat
 
 
