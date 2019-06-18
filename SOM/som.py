@@ -2,8 +2,8 @@ import numpy as np
 
 
 class cortex:
-    def __init__(self, m, a, r):
-        self.__cortexS= 3*3*10 #cortex size
+    def __init__(self, m, a, r, categories=10):
+        self.__cortexS= r*categories #cortex size
         self.__retinS = m #retin size
         self.__a = a #learning rate
         self.__r = r #genezalization radius
